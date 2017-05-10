@@ -1,6 +1,6 @@
 <p align="center">
 <a href="http://gmcloud.io/">
-GMCoin
+GMCloud
 </a>
 </p>
 <p align="center">📦 Yunbi PHP SDK</p>
