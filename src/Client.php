@@ -23,6 +23,7 @@ class Client
     public static $header = [];
     public static $timeout = 1;
 
+    protected static $sign = true;
     protected static $accessKey;
     protected static $secretKey;
 
@@ -95,7 +96,9 @@ class Client
                 'tonce'      => round(microtime(true) * 1000)
             ];
 
-            $params['signature'] = static::signature($uri, $method, $params);
+            if (static::$sign) {
+                $params['signature'] = static::signature($uri, $method, $params);
+            }
 
             $response = $client->request($method, $uri, [RequestOptions::FORM_PARAMS => $params]);
             $data = $response->getBody()->getContents();

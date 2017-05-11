@@ -29,6 +29,8 @@ class Yunbi extends Client
 
     public static function tickers($market = '')
     {
+        static::$sign = false;
+
         $uri = $market ? '/api/v2/tickers/' . $market : '/api/v2/tickers';
 
         return self::get($uri);
