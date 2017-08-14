@@ -21,7 +21,7 @@ class Client
     public static $apiUri;
     public static $contentType = 'application/json';
     public static $header = [];
-    public static $timeout = 1;
+    public static $timeout = 3;
 
     protected static $sign = true;
     protected static $accessKey;
