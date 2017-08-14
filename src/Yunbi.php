@@ -7,8 +7,6 @@
 
 namespace GMCloud\SDK;
 
-use Exception;
-
 class Yunbi extends Client
 {
     public static $apiUri = 'https://yunbi.com';
@@ -141,10 +139,6 @@ class Yunbi extends Client
     public static function createOrderMulti($market, $orders)
     {
         $uri = '/api/v2/orders/multi';
-
-        if (!isset($orders['side']) || !isset($orders['volume'])) {
-            throw new Exception('Invalided params');
-        }
 
         $params = [
             'market' => $market,

@@ -59,11 +59,24 @@ class Client
         return static::$secretKey = $secretKey;
     }
 
-    protected static function signature($uri, $method, $params)
+    protected static function queryBuild($params)
     {
         ksort($params);
 
-        return hash_hmac('sha256', implode('|', [$method, $uri, http_build_query($params)]), static::$secretKey);
+        if(isset($params['orders'])) {
+            foreach ($params['orders'] as &$order) {
+                ksort($order);
+            }
+        }
+
+        return urldecode(preg_replace('/%5B[0-9]+%5D/simU', '%5B%5D', http_build_query($params)));
+    }
+
+    protected static function signature($uri, $method, $params)
+    {
+        $query = static::queryBuild($params);
+
+        return hash_hmac('sha256', implode('|', [$method, $uri, $query]), static::$secretKey);
     }
 
     public static function get($uri, $params = [])
@@ -100,7 +113,7 @@ class Client
                 $params['signature'] = static::signature($uri, $method, $params);
             }
 
-            $response = $client->request($method, $uri, [RequestOptions::FORM_PARAMS => $params]);
+            $response = $client->request($method, $uri, [RequestOptions::QUERY => static::queryBuild($params)]);
             $data = $response->getBody()->getContents();
 
             return json_decode($data, true);
